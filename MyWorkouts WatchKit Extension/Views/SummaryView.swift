@@ -45,7 +45,7 @@ struct SummaryView: View {
                                                                 numberFormatStyle: .number.precision(.fractionLength(0)))))
                         .foregroundStyle(.pink)
                     SummaryMetricView(title: "Avg. Heart Rate",
-                                      value: workoutManager.averageHeartRate.formatted(.number.precision(.fractionLength(0))) + " bpm")
+                                      value: workoutManager.averageHeartRate.formattedValue)
                         .foregroundStyle(.red)
                     Text("Activity Rings")
                     ActivityRingsView(healthStore: workoutManager.healthStore)

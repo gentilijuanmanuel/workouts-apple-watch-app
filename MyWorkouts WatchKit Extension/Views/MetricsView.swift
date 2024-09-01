@@ -9,54 +9,60 @@ import SwiftUI
 import HealthKit
 import Foundation
 
-enum Metric: Hashable, Identifiable {
-    var id: UUID { UUID() }
+struct Metric: Identifiable {
 
-    case activeEnergy(Double, UnitEnergy)
-    case hearthRate(Double)
-    case distance(Double, UnitLength)
-    case currentPace(Double, UnitSpeed)
-    case averagePage(Double, UnitSpeed)
-    case cadence(Double)
+    enum Kind {
+        case activeEnergy(UnitEnergy)
+        case hearthRate
+        case distance(UnitLength)
+        case currentPace(UnitSpeed)
+        case averagePace(UnitSpeed)
+        case cadence
+    }
 
-    var view: Text {
-        switch self {
-        case let .activeEnergy(value, unit):
-            Text(
-                Measurement(value: value, unit: unit)
-                    .formatted(
-                        .measurement(
-                            width: .abbreviated,
-                            usage: .workout,
-                            numberFormatStyle: .number.precision(.fractionLength(0))
-                        )
+    let id = UUID()
+    private let kind: Kind
+    private var value: Double
+
+    var formattedValue: String {
+        switch kind {
+        case let .activeEnergy(unit):
+            Measurement(value: value, unit: unit)
+                .formatted(
+                    .measurement(
+                        width: .abbreviated,
+                        usage: .workout,
+                        numberFormatStyle: .number.precision(.fractionLength(0))
                     )
-            )
-        case let .hearthRate(value):
-            Text(value.formatted(.number.precision(.fractionLength(0))) + " bpm")
-        case let .distance(value, unit):
-            Text(
-                Measurement(value: value, unit: unit)
-                    .formatted(
-                        .measurement(
-                            width: .abbreviated,
-                            usage: .road
-                        )
+                )
+        case .hearthRate:
+            value.formatted(.number.precision(.fractionLength(0))) + " bpm"
+        case let .distance(unit):
+            Measurement(value: value, unit: unit)
+                .formatted(
+                    .measurement(
+                        width: .abbreviated,
+                        usage: .road
                     )
-            )
-        case let .currentPace(value, unit):
-            Text(
-                Measurement( value: value, unit: unit)
-                    .formatted(.measurement(width: .abbreviated))
-            )
-        case let .averagePage(value, unit):
-            Text(
-                Measurement(value: value, unit: unit)
-                    .formatted(.measurement(width: .abbreviated))
-            )
-        case let .cadence(value):
-            Text(value.formatted(.number.precision(.fractionLength(0))) + " rpm")
+                )
+        case let .currentPace(unit):
+            Measurement( value: value, unit: unit)
+                .formatted(.measurement(width: .abbreviated))
+        case let .averagePace(unit):
+            Measurement( value: value, unit: unit)
+                .formatted(.measurement(width: .abbreviated))
+        case .cadence:
+            value.formatted(.number.precision(.fractionLength(0))) + " rpm"
         }
+    }
+
+    init(kind: Kind, value: Double) {
+        self.kind = kind
+        self.value = value
+    }
+
+    mutating func set(newValue: Double) {
+        self.value = newValue
     }
 }
 
@@ -80,7 +86,9 @@ struct MetricsView: View {
                     )
                         .foregroundStyle(.yellow)
 
-                    ForEach(metrics) { metric in metric.view }
+                    ForEach(metrics) { metric in
+                        Text(metric.formattedValue)
+                    }
                 }
                 .font(
                     .system(
@@ -112,10 +120,7 @@ struct MetricsView_Previews: PreviewProvider {
     static var previews: some View {
         MetricsView(
             metrics: [
-                .activeEnergy(
-                    workoutManager.activeEnergy,
-                    UnitEnergy.kilocalories
-                )
+                Metric(kind: .activeEnergy(.kilocalories), value: 0)
             ]
         )
         .environmentObject(workoutManager)

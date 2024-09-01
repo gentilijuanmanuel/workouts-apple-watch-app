@@ -22,17 +22,17 @@ struct SessionPagingView: View {
             ControlsView().tag(Tab.controls)
             MetricsView(
                 metrics: [
-                    .activeEnergy(workoutManager.activeEnergy, UnitEnergy.kilocalories),
-                    .hearthRate(workoutManager.averageHeartRate),
-                    .distance(workoutManager.distance, UnitLength.meters)
+                    workoutManager.activeEnergy,
+                    workoutManager.averageHeartRate,
+                    workoutManager.distance
                 ]
             )
             .tag(Tab.metrics)
             MetricsView(
                 metrics: [
-                    .currentPace(workoutManager.activeEnergy, UnitSpeed.metersPerSecond),
-                    .averagePage(workoutManager.averagePace, UnitSpeed.metersPerSecond),
-                    .cadence(workoutManager.cadence)
+                    workoutManager.currentPace,
+                    workoutManager.averagePace,
+                    workoutManager.cadence
                 ]
             )
             .tag(Tab.moreMetrics)
