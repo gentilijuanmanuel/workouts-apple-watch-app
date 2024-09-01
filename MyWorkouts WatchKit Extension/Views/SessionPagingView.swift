@@ -14,13 +14,28 @@ struct SessionPagingView: View {
     @State private var selection: Tab = .metrics
 
     enum Tab {
-        case controls, metrics, nowPlaying
+        case controls, metrics, moreMetrics, nowPlaying
     }
 
     var body: some View {
         TabView(selection: $selection) {
             ControlsView().tag(Tab.controls)
-            MetricsView().tag(Tab.metrics)
+            MetricsView(
+                metrics: [
+                    .activeEnergy(workoutManager.activeEnergy, UnitEnergy.kilocalories),
+                    .hearthRate(workoutManager.averageHeartRate),
+                    .distance(workoutManager.distance, UnitLength.meters)
+                ]
+            )
+            .tag(Tab.metrics)
+            MetricsView(
+                metrics: [
+                    .currentPace(workoutManager.activeEnergy, UnitSpeed.metersPerSecond),
+                    .averagePage(workoutManager.averagePace, UnitSpeed.metersPerSecond),
+                    .cadence(workoutManager.cadence)
+                ]
+            )
+            .tag(Tab.moreMetrics)
             NowPlayingView().tag(Tab.nowPlaying)
         }
         .navigationTitle(workoutManager.selectedWorkout?.name ?? "")

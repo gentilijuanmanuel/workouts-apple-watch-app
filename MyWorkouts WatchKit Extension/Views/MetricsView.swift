@@ -7,9 +7,63 @@ The workout metrics view.
 
 import SwiftUI
 import HealthKit
+import Foundation
+
+enum Metric: Hashable, Identifiable {
+    var id: UUID { UUID() }
+
+    case activeEnergy(Double, UnitEnergy)
+    case hearthRate(Double)
+    case distance(Double, UnitLength)
+    case currentPace(Double, UnitSpeed)
+    case averagePage(Double, UnitSpeed)
+    case cadence(Double)
+
+    var view: Text {
+        switch self {
+        case let .activeEnergy(value, unit):
+            Text(
+                Measurement(value: value, unit: unit)
+                    .formatted(
+                        .measurement(
+                            width: .abbreviated,
+                            usage: .workout,
+                            numberFormatStyle: .number.precision(.fractionLength(0))
+                        )
+                    )
+            )
+        case let .hearthRate(value):
+            Text(value.formatted(.number.precision(.fractionLength(0))) + " bpm")
+        case let .distance(value, unit):
+            Text(
+                Measurement(value: value, unit: unit)
+                    .formatted(
+                        .measurement(
+                            width: .abbreviated,
+                            usage: .road
+                        )
+                    )
+            )
+        case let .currentPace(value, unit):
+            Text(
+                Measurement( value: value, unit: unit)
+                    .formatted(.measurement(width: .abbreviated))
+            )
+        case let .averagePage(value, unit):
+            Text(
+                Measurement(value: value, unit: unit)
+                    .formatted(.measurement(width: .abbreviated))
+            )
+        case let .cadence(value):
+            Text(value.formatted(.number.precision(.fractionLength(0))) + " rpm")
+        }
+    }
+}
 
 struct MetricsView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
+
+    private let metrics: [Metric]
     
     var body: some View {
         TimelineView(
@@ -26,59 +80,7 @@ struct MetricsView: View {
                     )
                         .foregroundStyle(.yellow)
 
-                    // Active energy
-                    Text(
-                        Measurement(
-                            value: workoutManager.activeEnergy,
-                            unit: UnitEnergy.kilocalories
-                        )
-                            .formatted(
-                                .measurement(
-                                    width: .abbreviated,
-                                    usage: .workout,
-                                    numberFormatStyle: .number.precision(.fractionLength(0)
-                                                                        )
-                                )
-                            )
-                    )
-
-                    // Hearth Rate
-                    Text(workoutManager.heartRate.formatted(.number.precision(.fractionLength(0))) + " bpm")
-
-                    // Distance
-                    Text(
-                        Measurement(
-                            value: workoutManager.distance,
-                            unit: UnitLength.meters
-                        )
-                        .formatted(
-                            .measurement(
-                                width: .abbreviated,
-                                usage: .road
-                            )
-                        )
-                    )
-
-                    // Current Pace
-                    Text(
-                        Measurement(
-                            value: workoutManager.currentPace,
-                            unit: UnitSpeed.metersPerSecond
-                        )
-                        .formatted(.measurement(width: .abbreviated))
-                    )
-
-                    // Average Pace
-                    Text(
-                        Measurement(
-                            value: workoutManager.averagePace,
-                            unit: UnitSpeed.metersPerSecond
-                        )
-                        .formatted(.measurement(width: .abbreviated))
-                    )
-
-                    // Cadence
-                    Text(workoutManager.cadence.formatted(.number.precision(.fractionLength(0))) + " rpm")
+                    ForEach(metrics) { metric in metric.view }
                 }
                 .font(
                     .system(
@@ -97,14 +99,30 @@ struct MetricsView: View {
             .scenePadding()
         }
     }
-}
 
-struct MetricsView_Previews: PreviewProvider {
-    static var previews: some View {
-        MetricsView()
-            .environmentObject(WorkoutManager())
+    init(metrics: [Metric]) {
+        self.metrics = metrics
     }
 }
+
+// MARK: - Previews
+
+struct MetricsView_Previews: PreviewProvider {
+    static let workoutManager = WorkoutManager()
+    static var previews: some View {
+        MetricsView(
+            metrics: [
+                .activeEnergy(
+                    workoutManager.activeEnergy,
+                    UnitEnergy.kilocalories
+                )
+            ]
+        )
+        .environmentObject(workoutManager)
+    }
+}
+
+// MARK: - MetricsTimelineSchedule
 
 private struct MetricsTimelineSchedule: TimelineSchedule {
     var startDate: Date
