@@ -27,26 +27,51 @@ struct SummaryView: View {
         } else {
             ScrollView {
                 VStack(alignment: .leading) {
-                    SummaryMetricView(title: "Total Time",
-                                      value: durationFormatter.string(from: workoutManager.workout?.duration ?? 0.0) ?? "")
+                    SummaryMetricView(
+                        title: "Total Time",
+                        value: durationFormatter.string(from: workoutManager.workout?.duration ?? 0.0) ?? ""
+                    )
                         .foregroundStyle(.yellow)
-                    SummaryMetricView(title: "Total Distance",
-                                      value: Measurement(value: workoutManager.workout?.totalDistance?.doubleValue(for: .meter()) ?? 0,
-                                                         unit: UnitLength.meters)
-                                        .formatted(.measurement(width: .abbreviated,
-                                                                usage: .road,
-                                                                numberFormatStyle: .number.precision(.fractionLength(2)))))
-                        .foregroundStyle(.green)
-                    SummaryMetricView(title: "Total Energy",
-                                      value: Measurement(value: workoutManager.workout?.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0,
-                                                         unit: UnitEnergy.kilocalories)
-                                        .formatted(.measurement(width: .abbreviated,
-                                                                usage: .workout,
-                                                                numberFormatStyle: .number.precision(.fractionLength(0)))))
-                        .foregroundStyle(.pink)
-                    SummaryMetricView(title: "Avg. Heart Rate",
-                                      value: workoutManager.averageHeartRate.formattedValue)
-                        .foregroundStyle(.red)
+                    SummaryMetricView(
+                        title: "Total Distance",
+                        value: Measurement(
+                            value: workoutManager.workout?.totalDistance?.doubleValue(for: .meter()) ?? 0,
+                            unit: UnitLength.meters
+                        )
+                        .formatted(
+                            .measurement(
+                                width: .abbreviated,
+                                usage: .road,
+                                numberFormatStyle: .number.precision(.fractionLength(2))
+                            )
+                        )
+                    )
+                    .foregroundStyle(.green)
+                    SummaryMetricView(
+                        title: "Total Energy",
+                        value: Measurement(
+                            value: workoutManager.workout?.totalEnergyBurned?.doubleValue(for: .kilocalorie()) ?? 0,
+                            unit: UnitEnergy.kilocalories
+                        )
+                        .formatted(
+                            .measurement(
+                                width: .abbreviated,
+                                usage: .workout,
+                                numberFormatStyle: .number.precision(.fractionLength(0))
+                            )
+                        )
+                    )
+                    .foregroundStyle(.pink)
+                    SummaryMetricView(
+                        title: "Avg. Heart Rate",
+                        value: workoutManager.averageHeartRate.formattedValue
+                    )
+                    .foregroundStyle(.red)
+                    SummaryMetricView(
+                        title: "Avg. Pace",
+                        value: workoutManager.averagePace.formattedValue
+                    )
+                    .foregroundStyle(.cyan)
                     Text("Activity Rings")
                     ActivityRingsView(healthStore: workoutManager.healthStore)
                         .frame(width: 50, height: 50)
