@@ -119,38 +119,45 @@ final class WorkoutManager: NSObject, ObservableObject {
     // MARK: - Workout Metrics
     @Published var averageHeartRate = Metric(
         kind: .hearthRate,
-        value: 0
+        value: 0,
+        description: "Avg. Heart Rate"
     )
 
     @Published var heartRate = Metric(
         kind: .hearthRate,
-        value: 0
+        value: 0,
+        description: "Current Heart Rate"
     )
 
     @Published var activeEnergy = Metric(
         kind: .activeEnergy(.kilocalories),
-        value: 0
+        value: 0,
+        description: "Current Active Energy"
     )
 
     @Published var distance = Metric(
         kind: .distance(.meters),
-        value: 0
+        value: 0,
+        description: "Current Distance"
     )
 
     // TODO: figure out a way to expose this only for watchOS 9.0+
     @Published var currentPace = Metric(
         kind: .currentPace(.metersPerSecond),
-        value: 0
+        value: 0,
+        description: "Current Pace"
     )
 
     @Published var averagePace = Metric(
         kind: .averagePace(.metersPerSecond),
-        value: 0
+        value: 0,
+        description: "Avg. Pace"
     )
 
     @Published var cadence = Metric(
         kind: .cadence,
-        value: 0
+        value: 0,
+        description: "Current Cadence"
     )
 
     @Published var workout: HKWorkout?

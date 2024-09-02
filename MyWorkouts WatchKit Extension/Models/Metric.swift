@@ -21,6 +21,7 @@ struct Metric: Identifiable {
     }
 
     let id = UUID()
+    let description: String?
     private let kind: Kind
     private var value: Double
 
@@ -56,9 +57,10 @@ struct Metric: Identifiable {
         }
     }
 
-    init(kind: Kind, value: Double) {
+    init(kind: Kind, value: Double, description: String? = nil) {
         self.kind = kind
         self.value = value
+        self.description = description
     }
 
     mutating func set(newValue: Double) {
