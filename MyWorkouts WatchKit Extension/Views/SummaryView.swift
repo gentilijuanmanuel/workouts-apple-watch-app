@@ -5,10 +5,9 @@ Abstract:
 The workout summary view.
 */
 
-import Foundation
-import HealthKit
 import SwiftUI
-import WatchKit
+
+// MARK: - SummaryView
 
 struct SummaryView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
@@ -87,11 +86,15 @@ struct SummaryView: View {
     }
 }
 
+// MARK: - Previews
+
 struct SummaryView_Previews: PreviewProvider {
     static var previews: some View {
         SummaryView().environmentObject(WorkoutManager())
     }
 }
+
+// MARK: - SummaryMetricView
 
 struct SummaryMetricView: View {
     var title: String

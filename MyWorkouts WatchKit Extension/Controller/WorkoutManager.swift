@@ -5,10 +5,11 @@ Abstract:
 The workout manager that interfaces with HealthKit.
 */
 
-import Foundation
 import HealthKit
 
-class WorkoutManager: NSObject, ObservableObject {
+// MARK: - WorkoutManager
+
+final class WorkoutManager: NSObject, ObservableObject {
     var selectedWorkout: HKWorkoutActivityType? {
         didSet {
             guard let selectedWorkout = selectedWorkout else { return }
@@ -222,6 +223,7 @@ class WorkoutManager: NSObject, ObservableObject {
 }
 
 // MARK: - HKWorkoutSessionDelegate
+
 extension WorkoutManager: HKWorkoutSessionDelegate {
     func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState,
                         from fromState: HKWorkoutSessionState, date: Date) {
@@ -247,6 +249,7 @@ extension WorkoutManager: HKWorkoutSessionDelegate {
 }
 
 // MARK: - HKLiveWorkoutBuilderDelegate
+
 extension WorkoutManager: HKLiveWorkoutBuilderDelegate {
     func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) {
 

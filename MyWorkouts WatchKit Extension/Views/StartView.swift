@@ -8,6 +8,8 @@ The start view.
 import SwiftUI
 import HealthKit
 
+// MARK: - StartView
+
 struct StartView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     var workoutTypes: [HKWorkoutActivityType] = [.cycling, .running, .walking]
@@ -26,27 +28,10 @@ struct StartView: View {
     }
 }
 
+// MARK: - Previews
+
 struct StartView_Previews: PreviewProvider {
     static var previews: some View {
         StartView().environmentObject(WorkoutManager())
-    }
-}
-
-extension HKWorkoutActivityType: Identifiable {
-    public var id: UInt {
-        rawValue
-    }
-
-    var name: String {
-        switch self {
-        case .running:
-            return "Run"
-        case .cycling:
-            return "Bike"
-        case .walking:
-            return "Walk"
-        default:
-            return ""
-        }
     }
 }

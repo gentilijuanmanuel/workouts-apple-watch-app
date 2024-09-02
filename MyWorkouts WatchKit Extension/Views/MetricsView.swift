@@ -6,65 +6,8 @@ The workout metrics view.
 */
 
 import SwiftUI
-import HealthKit
-import Foundation
 
-struct Metric: Identifiable {
-
-    enum Kind {
-        case activeEnergy(UnitEnergy)
-        case hearthRate
-        case distance(UnitLength)
-        case currentPace(UnitSpeed)
-        case averagePace(UnitSpeed)
-        case cadence
-    }
-
-    let id = UUID()
-    private let kind: Kind
-    private var value: Double
-
-    var formattedValue: String {
-        switch kind {
-        case let .activeEnergy(unit):
-            Measurement(value: value, unit: unit)
-                .formatted(
-                    .measurement(
-                        width: .abbreviated,
-                        usage: .workout,
-                        numberFormatStyle: .number.precision(.fractionLength(0))
-                    )
-                )
-        case .hearthRate:
-            value.formatted(.number.precision(.fractionLength(0))) + " bpm"
-        case let .distance(unit):
-            Measurement(value: value, unit: unit)
-                .formatted(
-                    .measurement(
-                        width: .abbreviated,
-                        usage: .road
-                    )
-                )
-        case let .currentPace(unit):
-            Measurement( value: value, unit: unit)
-                .formatted(.measurement(width: .abbreviated))
-        case let .averagePace(unit):
-            Measurement( value: value, unit: unit)
-                .formatted(.measurement(width: .abbreviated))
-        case .cadence:
-            value.formatted(.number.precision(.fractionLength(0))) + " rpm"
-        }
-    }
-
-    init(kind: Kind, value: Double) {
-        self.kind = kind
-        self.value = value
-    }
-
-    mutating func set(newValue: Double) {
-        self.value = newValue
-    }
-}
+// MARK: - MetricsView
 
 struct MetricsView: View {
     @EnvironmentObject var workoutManager: WorkoutManager

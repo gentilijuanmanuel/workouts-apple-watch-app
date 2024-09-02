@@ -8,6 +8,8 @@ The paging view to switch between controls, metrics, and now playing views.
 import SwiftUI
 import WatchKit
 
+// MARK: - SessionPagingView
+
 struct SessionPagingView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     @Environment(\.isLuminanceReduced) var isLuminanceReduced
@@ -56,6 +58,8 @@ struct SessionPagingView: View {
         }
     }
 }
+
+// MARK: - Previews
 
 struct PagingView_Previews: PreviewProvider {
     static var previews: some View {
