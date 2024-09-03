@@ -7,6 +7,8 @@ The workout controls.
 
 import SwiftUI
 
+// MARK: - ControlsView
+
 struct ControlsView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
 
@@ -35,6 +37,8 @@ struct ControlsView: View {
         }
     }
 }
+
+// MARK: - Previews
 
 struct ControlsView_Previews: PreviewProvider {
     static var previews: some View {

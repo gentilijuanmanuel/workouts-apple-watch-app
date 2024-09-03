@@ -6,35 +6,71 @@ The workout metrics view.
 */
 
 import SwiftUI
-import HealthKit
+
+// MARK: - MetricsView
 
 struct MetricsView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
+
+    private let metrics: [Metric]
     
     var body: some View {
-        TimelineView(MetricsTimelineSchedule(from: workoutManager.builder?.startDate ?? Date(),
-                                             isPaused: workoutManager.session?.state == .paused)) { context in
-            VStack(alignment: .leading) {
-                ElapsedTimeView(elapsedTime: workoutManager.builder?.elapsedTime(at: context.date) ?? 0, showSubseconds: context.cadence == .live)
-                    .foregroundStyle(.yellow)
-                Text(Measurement(value: workoutManager.activeEnergy, unit: UnitEnergy.kilocalories)
-                        .formatted(.measurement(width: .abbreviated, usage: .workout, numberFormatStyle: .number.precision(.fractionLength(0)))))
-                Text(workoutManager.heartRate.formatted(.number.precision(.fractionLength(0))) + " bpm")
-                Text(Measurement(value: workoutManager.distance, unit: UnitLength.meters).formatted(.measurement(width: .abbreviated, usage: .road)))
+        TimelineView(
+            MetricsTimelineSchedule(
+                from: workoutManager.builder?.startDate ?? Date(),
+                isPaused: workoutManager.session?.state == .paused
+            )
+        ) { context in
+            ScrollView {
+                VStack(alignment: .leading) {
+                    ElapsedTimeView(
+                        elapsedTime: workoutManager.builder?.elapsedTime(at: context.date) ?? 0,
+                        showSubseconds: context.cadence == .live
+                    )
+                        .foregroundStyle(.yellow)
+
+                    ForEach(metrics) { metric in
+                        MetricRowView(metric: metric)
+                    }
+                }
+                .font(
+                    .system(
+                        .title,
+                        design: .rounded
+                    )
+                    .monospacedDigit()
+                    .lowercaseSmallCaps()
+                )
             }
-            .font(.system(.title, design: .rounded).monospacedDigit().lowercaseSmallCaps())
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(
+                maxWidth: .infinity,
+                alignment: .leading
+            )
             .ignoresSafeArea(edges: .bottom)
             .scenePadding()
         }
     }
-}
 
-struct MetricsView_Previews: PreviewProvider {
-    static var previews: some View {
-        MetricsView().environmentObject(WorkoutManager())
+    init(metrics: [Metric]) {
+        self.metrics = metrics
     }
 }
+
+// MARK: - Previews
+
+struct MetricsView_Previews: PreviewProvider {
+    static let workoutManager = WorkoutManager()
+    static var previews: some View {
+        MetricsView(
+            metrics: [
+                Metric(kind: .activeEnergy(.kilocalories), value: 0)
+            ]
+        )
+        .environmentObject(workoutManager)
+    }
+}
+
+// MARK: - MetricsTimelineSchedule
 
 private struct MetricsTimelineSchedule: TimelineSchedule {
     var startDate: Date
@@ -54,5 +90,30 @@ private struct MetricsTimelineSchedule: TimelineSchedule {
             guard !isPaused else { return nil }
             return baseSchedule.next()
         }
+    }
+}
+
+// MARK: - MetricRowView
+
+struct MetricRowView: View {
+    private enum Layout {
+        static let stackSpacing: CGFloat = -8
+    }
+
+    private let metric: Metric
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: Layout.stackSpacing) {
+            if let description = metric.description {
+                Text(description)
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+            }
+            Text(metric.formattedValue)
+        }
+    }
+
+    init(metric: Metric) {
+        self.metric = metric
     }
 }

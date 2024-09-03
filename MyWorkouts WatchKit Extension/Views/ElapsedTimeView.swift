@@ -7,6 +7,8 @@ The elapsed time.
 
 import SwiftUI
 
+// MARK: - ElapsedTimeView
+
 struct ElapsedTimeView: View {
     var elapsedTime: TimeInterval = 0
     var showSubseconds: Bool = true
@@ -21,7 +23,9 @@ struct ElapsedTimeView: View {
     }
 }
 
-class ElapsedTimeFormatter: Formatter {
+// MARK: - ElapsedTimeFormatter
+
+final class ElapsedTimeFormatter: Formatter {
     let componentsFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.minute, .second]
@@ -48,6 +52,8 @@ class ElapsedTimeFormatter: Formatter {
         return formattedString
     }
 }
+
+// MARK: - Previews
 
 struct ElapsedTime_Previews: PreviewProvider {
     static var previews: some View {

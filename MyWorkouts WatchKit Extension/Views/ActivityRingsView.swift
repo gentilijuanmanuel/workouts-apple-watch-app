@@ -5,9 +5,10 @@ Abstract:
 SwiftUI wrapper for WKInterfaceActivityRing.
 */
 
-import Foundation
 import HealthKit
 import SwiftUI
+
+// MARK: - ActivityRingsView
 
 struct ActivityRingsView: WKInterfaceObjectRepresentable {
     let healthStore: HKHealthStore
