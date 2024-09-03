@@ -6,6 +6,7 @@ The workout metric model.
 */
 
 import Foundation
+import HealthKit
 
 // MARK: - Metric
 
@@ -17,13 +18,18 @@ struct Metric: Identifiable {
         case distance(UnitLength)
         case currentPace(UnitSpeed)
         case averagePace(UnitSpeed)
-        case cadence
+        case cadence(UnitCadence)
+
+        enum UnitCadence: String {
+            case rpm
+            case spm
+        }
     }
 
     let id = UUID()
     let description: String?
     private let kind: Kind
-    private var value: Double
+    private(set) var value: Double
 
     var formattedValue: String {
         switch kind {
@@ -52,8 +58,8 @@ struct Metric: Identifiable {
         case let .averagePace(unit):
             Measurement( value: value, unit: unit)
                 .formatted(.measurement(width: .abbreviated))
-        case .cadence:
-            value.formatted(.number.precision(.fractionLength(0))) + " rpm"
+        case let .cadence(unit):
+            value.formatted(.number.precision(.fractionLength(0))) + " \(unit.rawValue)"
         }
     }
 

@@ -76,13 +76,15 @@ struct SessionPagingView: View {
         case .walking:
             return [
                 workoutManager.currentPace,
-                workoutManager.averagePace
+                workoutManager.averagePace,
+                workoutManager.walkingRunningCadence
             ]
         case .running:
             if #available(watchOS 9.0, *) {
                 return [
                     workoutManager.currentPace,
-                    workoutManager.averagePace
+                    workoutManager.averagePace,
+                    workoutManager.walkingRunningCadence
                 ]
             } else {
                 return nil

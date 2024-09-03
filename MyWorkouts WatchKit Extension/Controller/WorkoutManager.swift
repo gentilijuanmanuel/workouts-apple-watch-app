@@ -74,10 +74,12 @@ final class WorkoutManager: NSObject, ObservableObject {
             HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!,
             HKQuantityType.quantityType(forIdentifier: .distanceCycling)!,
             HKQuantityType.quantityType(forIdentifier: .walkingSpeed)!,
+            HKQuantityType.quantityType(forIdentifier: .walkingStepLength)!,
             HKObjectType.activitySummaryType()
         ]
         if #available(watchOS 9.0, *) {
             typesToRead.insert(HKQuantityType.quantityType(forIdentifier: .runningSpeed)!)
+            typesToRead.insert(HKQuantityType.quantityType(forIdentifier: .runningStrideLength)!)
         }
         if #available(watchOS 10.0, *) {
             typesToRead.insert(HKQuantityType.quantityType(forIdentifier: .cyclingSpeed)!)
@@ -155,7 +157,13 @@ final class WorkoutManager: NSObject, ObservableObject {
     )
 
     @Published var cyclingCadence = Metric(
-        kind: .cadence,
+        kind: .cadence(.rpm),
+        value: 0,
+        description: "Current Cadence"
+    )
+
+    @Published var walkingRunningCadence = Metric(
+        kind: .cadence(.spm),
         value: 0,
         description: "Current Cadence"
     )
@@ -182,17 +190,39 @@ final class WorkoutManager: NSObject, ObservableObject {
                 self.distance.set(newValue: statistics.sumQuantity()?.doubleValue(for: meterUnit) ?? 0)
             case HKQuantityType.quantityType(forIdentifier: .walkingSpeed):
                 let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
-                self.currentPace.set(newValue: statistics.sumQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                self.currentPace.set(newValue: statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
                 self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
+            case HKQuantityType.quantityType(forIdentifier: .walkingStepLength):
+                let paceUnit = HKUnit.meter()
+                let stepLength = (statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                let minute = Measurement(
+                    value: 1,
+                    unit: UnitDuration.minutes
+                ).converted(to: .seconds).value
+                let cadence = (self.currentPace.value / stepLength) * minute
+                self.walkingRunningCadence.set(newValue: cadence)
             default:
                 break
             }
 
-            if #available(watchOS 9.0, *),
-               statistics.quantityType == HKQuantityType.quantityType(forIdentifier: .runningSpeed) {
-                let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
-                self.currentPace.set(newValue: statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
-                self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
+            if #available(watchOS 9.0, *) {
+                switch statistics.quantityType {
+                case HKQuantityType.quantityType(forIdentifier: .runningSpeed):
+                    let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
+                    self.currentPace.set(newValue: statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                    self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                case HKQuantityType.quantityType(forIdentifier: .runningStrideLength):
+                    let paceUnit = HKUnit.meter()
+                    let stepLength = (statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                    let minute = Measurement(
+                        value: 1,
+                        unit: UnitDuration.minutes
+                    ).converted(to: .seconds).value
+                    let cadence = (self.currentPace.value / stepLength) * minute
+                    self.walkingRunningCadence.set(newValue: cadence)
+                default:
+                    break
+                }
             }
 
             if #available(watchOS 10.0, *) {
