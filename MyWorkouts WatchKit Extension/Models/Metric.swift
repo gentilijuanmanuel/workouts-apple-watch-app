@@ -14,11 +14,15 @@ struct Metric: Identifiable {
 
     enum Kind {
         case activeEnergy(UnitEnergy)
-        case hearthRate
+        case hearthRate(UnitHearthRate)
         case distance(UnitLength)
         case currentPace(UnitSpeed)
         case averagePace(UnitSpeed)
         case cadence(UnitCadence)
+
+        enum UnitHearthRate: String {
+            case bpm
+        }
 
         enum UnitCadence: String {
             case rpm
@@ -42,8 +46,8 @@ struct Metric: Identifiable {
                         numberFormatStyle: .number.precision(.fractionLength(0))
                     )
                 )
-        case .hearthRate:
-            value.formatted(.number.precision(.fractionLength(0))) + " bpm"
+        case let .hearthRate(unit):
+            value.formatted(.number.precision(.fractionLength(0))) + " \(unit.rawValue)"
         case let .distance(unit):
             Measurement(value: value, unit: unit)
                 .formatted(

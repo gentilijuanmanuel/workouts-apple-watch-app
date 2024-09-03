@@ -121,13 +121,13 @@ final class WorkoutManager: NSObject, ObservableObject {
     // MARK: - Workout Metrics
 
     @Published var averageHeartRate = Metric(
-        kind: .hearthRate,
+        kind: .hearthRate(.bpm),
         value: 0,
         description: "Avg. Heart Rate"
     )
 
     @Published var heartRate = Metric(
-        kind: .hearthRate,
+        kind: .hearthRate(.bpm),
         value: 0,
         description: "Current Heart Rate"
     )
