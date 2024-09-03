@@ -117,6 +117,7 @@ final class WorkoutManager: NSObject, ObservableObject {
     }
 
     // MARK: - Workout Metrics
+
     @Published var averageHeartRate = Metric(
         kind: .hearthRate,
         value: 0,
@@ -141,7 +142,6 @@ final class WorkoutManager: NSObject, ObservableObject {
         description: "Current Distance"
     )
 
-    // TODO: figure out a way to expose this only for watchOS 9.0+
     @Published var currentPace = Metric(
         kind: .currentPace(.metersPerSecond),
         value: 0,
@@ -154,7 +154,7 @@ final class WorkoutManager: NSObject, ObservableObject {
         description: "Avg. Pace"
     )
 
-    @Published var cadence = Metric(
+    @Published var cyclingCadence = Metric(
         kind: .cadence,
         value: 0,
         description: "Current Cadence"
@@ -180,7 +180,6 @@ final class WorkoutManager: NSObject, ObservableObject {
                 HKQuantityType.quantityType(forIdentifier: .distanceCycling):
                 let meterUnit = HKUnit.meter()
                 self.distance.set(newValue: statistics.sumQuantity()?.doubleValue(for: meterUnit) ?? 0)
-            // TODO: figure out why this quantity type is not being returned.
             case HKQuantityType.quantityType(forIdentifier: .walkingSpeed):
                 let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
                 self.currentPace.set(newValue: statistics.sumQuantity()?.doubleValue(for: paceUnit) ?? 0)
@@ -198,14 +197,13 @@ final class WorkoutManager: NSObject, ObservableObject {
 
             if #available(watchOS 10.0, *) {
                 switch statistics.quantityType {
-                // TODO: figure out why this quantity type is not being returned.
                 case HKQuantityType.quantityType(forIdentifier: .cyclingSpeed):
                     let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
                     self.currentPace.set(newValue: statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
                     self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
                 case HKQuantityType.quantityType(forIdentifier: .cyclingCadence):
                     let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
-                    self.cadence.set(newValue: statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit) ?? 0)
+                    self.cyclingCadence.set(newValue: statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit) ?? 0)
                     break
                 default:
                     break
@@ -225,7 +223,7 @@ final class WorkoutManager: NSObject, ObservableObject {
         distance.set(newValue: 0)
         currentPace.set(newValue: 0)
         averagePace.set(newValue: 0)
-        cadence.set(newValue: 0)
+        cyclingCadence.set(newValue: 0)
     }
 }
 
