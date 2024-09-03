@@ -66,11 +66,13 @@ struct SummaryView: View {
                         value: workoutManager.averageHeartRate.formattedValue
                     )
                     .foregroundStyle(.red)
-                    SummaryMetricView(
-                        title: "Avg. Pace",
-                        value: workoutManager.averagePace.formattedValue
-                    )
-                    .foregroundStyle(.cyan)
+                    if shouldShowAveragePaceView {
+                        SummaryMetricView(
+                            title: "Avg. Pace",
+                            value: workoutManager.averagePace.formattedValue
+                        )
+                        .foregroundStyle(.cyan)
+                    }
                     Text("Activity Rings")
                     ActivityRingsView(healthStore: workoutManager.healthStore)
                         .frame(width: 50, height: 50)
@@ -82,6 +84,31 @@ struct SummaryView: View {
             }
             .navigationTitle("Summary")
             .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+
+    var shouldShowAveragePaceView: Bool {
+        guard let selectedWorkout = workoutManager.selectedWorkout else {
+            return false
+        }
+
+        switch selectedWorkout {
+        case .cycling:
+            if #available(watchOS 10.0, *) {
+                return true
+            } else {
+                return false
+            }
+        case .running:
+            if #available(watchOS 9.0, *) {
+                return true
+            } else {
+                return false
+            }
+        case .walking:
+            return true
+        default:
+            return false
         }
     }
 }
