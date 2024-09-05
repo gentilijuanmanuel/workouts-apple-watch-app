@@ -31,8 +31,8 @@ final class WorkoutManager: NSObject, ObservableObject {
 
     private var smoothingAlgorithm: SmoothingAlgorithm
 
-    init(algorithmType: SmoothingAlgorithmType = .simpleMovingAverage(bufferSize: 2)) {
-        self.smoothingAlgorithm = algorithmType.makeAlgorithm()
+    init(smoothingAlgorithm: SmoothingAlgorithm = SimpleMovingAverage(bufferSize: 2)) {
+        self.smoothingAlgorithm = smoothingAlgorithm
     }
 
     // Start the workout.

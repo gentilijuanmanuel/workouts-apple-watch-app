@@ -27,7 +27,6 @@
 		F58D30142C89C1400003A82E /* SmoothingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */; };
 		F58D30162C89C1750003A82E /* SimpleMovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30152C89C1750003A82E /* SimpleMovingAverage.swift */; };
 		F58D30182C89C1AE0003A82E /* ExponentialMovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30172C89C1AE0003A82E /* ExponentialMovingAverage.swift */; };
-		F58D301A2C89C1D80003A82E /* SmoothingAlgorithmType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30192C89C1D80003A82E /* SmoothingAlgorithmType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,7 +81,6 @@
 		F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmoothingAlgorithm.swift; sourceTree = "<group>"; };
 		F58D30152C89C1750003A82E /* SimpleMovingAverage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleMovingAverage.swift; sourceTree = "<group>"; };
 		F58D30172C89C1AE0003A82E /* ExponentialMovingAverage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExponentialMovingAverage.swift; sourceTree = "<group>"; };
-		F58D30192C89C1D80003A82E /* SmoothingAlgorithmType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmoothingAlgorithmType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,7 +220,6 @@
 				F58D30172C89C1AE0003A82E /* ExponentialMovingAverage.swift */,
 				F58D30152C89C1750003A82E /* SimpleMovingAverage.swift */,
 				F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */,
-				F58D30192C89C1D80003A82E /* SmoothingAlgorithmType.swift */,
 			);
 			path = "Smoothing Algorithms";
 			sourceTree = "<group>";
@@ -334,7 +331,6 @@
 				F58D30142C89C1400003A82E /* SmoothingAlgorithm.swift in Sources */,
 				E0DCA62D2661B3CD00496154 /* ActivityRingsView.swift in Sources */,
 				E0DCA6242661B3A800496154 /* WorkoutManager.swift in Sources */,
-				F58D301A2C89C1D80003A82E /* SmoothingAlgorithmType.swift in Sources */,
 				E0DCA6322661B3CD00496154 /* MetricsView.swift in Sources */,
 				F54543222C85C88E0085795A /* HKWorkoutActivityType+.swift in Sources */,
 				F58D30182C89C1AE0003A82E /* ExponentialMovingAverage.swift in Sources */,
