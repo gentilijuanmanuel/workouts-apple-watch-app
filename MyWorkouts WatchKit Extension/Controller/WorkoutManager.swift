@@ -218,11 +218,6 @@ final class WorkoutManager: NSObject, ObservableObject {
                 switch statistics.quantityType {
                 case HKQuantityType.quantityType(forIdentifier: .runningSpeed):
                     let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
-
-                    debugPrint(
-                        "[Speed] Most recent quantity: \(statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)"
-                    )
-
                     let smoothedPace = self.smoothingAlgorithm.smoothPace(
                         statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0
                     )
