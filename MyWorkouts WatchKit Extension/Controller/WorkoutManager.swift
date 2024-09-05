@@ -203,13 +203,9 @@ final class WorkoutManager: NSObject, ObservableObject {
                 self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
             case HKQuantityType.quantityType(forIdentifier: .walkingStepLength):
                 let paceUnit = HKUnit.meter()
-                let stepLength = (statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
-                let minute = Measurement(
-                    value: 1,
-                    unit: UnitDuration.minutes
-                ).converted(to: .seconds).value
-                let cadence = (self.currentPace.value / stepLength) * minute
-                self.walkingRunningCadence.set(newValue: cadence)
+                let stepLength = statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0
+                let calculatedCadence = self.calculateCadence(given: stepLength)
+                self.walkingRunningCadence.set(newValue: calculatedCadence)
             default:
                 break
             }
@@ -225,13 +221,9 @@ final class WorkoutManager: NSObject, ObservableObject {
                     self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
                 case HKQuantityType.quantityType(forIdentifier: .runningStrideLength):
                     let paceUnit = HKUnit.meter()
-                    let stepLength = (statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
-                    let minute = Measurement(
-                        value: 1,
-                        unit: UnitDuration.minutes
-                    ).converted(to: .seconds).value
-                    let cadence = (self.currentPace.value / stepLength) * minute
-                    self.walkingRunningCadence.set(newValue: cadence)
+                    let strideLength = statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0
+                    let calculatedCadence = self.calculateCadence(given: strideLength)
+                    self.walkingRunningCadence.set(newValue: calculatedCadence)
                 default:
                     break
                 }
@@ -269,6 +261,13 @@ final class WorkoutManager: NSObject, ObservableObject {
         currentPace.set(newValue: 0)
         averagePace.set(newValue: 0)
         cyclingCadence.set(newValue: 0)
+    }
+
+    private func calculateCadence(given stepLength: Double) -> Double {
+        let minute = Measurement(value: 1,unit: UnitDuration.minutes)
+            .converted(to: .seconds)
+            .value
+        return (self.currentPace.value / stepLength) * minute
     }
 }
 
