@@ -24,6 +24,10 @@
 		E0DCA6322661B3CD00496154 /* MetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DCA62B2661B3CD00496154 /* MetricsView.swift */; };
 		F545431F2C85C5990085795A /* Metric.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545431E2C85C5990085795A /* Metric.swift */; };
 		F54543222C85C88E0085795A /* HKWorkoutActivityType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54543212C85C88E0085795A /* HKWorkoutActivityType+.swift */; };
+		F58D30142C89C1400003A82E /* SmoothingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */; };
+		F58D30162C89C1750003A82E /* SimpleMovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30152C89C1750003A82E /* SimpleMovingAverage.swift */; };
+		F58D30182C89C1AE0003A82E /* ExponentialMovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30172C89C1AE0003A82E /* ExponentialMovingAverage.swift */; };
+		F58D301A2C89C1D80003A82E /* SmoothingAlgorithmType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30192C89C1D80003A82E /* SmoothingAlgorithmType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +79,10 @@
 		E0DCA62B2661B3CD00496154 /* MetricsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetricsView.swift; sourceTree = "<group>"; };
 		F545431E2C85C5990085795A /* Metric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metric.swift; sourceTree = "<group>"; };
 		F54543212C85C88E0085795A /* HKWorkoutActivityType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HKWorkoutActivityType+.swift"; sourceTree = "<group>"; };
+		F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmoothingAlgorithm.swift; sourceTree = "<group>"; };
+		F58D30152C89C1750003A82E /* SimpleMovingAverage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleMovingAverage.swift; sourceTree = "<group>"; };
+		F58D30172C89C1AE0003A82E /* ExponentialMovingAverage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExponentialMovingAverage.swift; sourceTree = "<group>"; };
+		F58D30192C89C1D80003A82E /* SmoothingAlgorithmType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmoothingAlgorithmType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +139,7 @@
 		E0CF93B12661A76500F7CED2 /* MyWorkouts WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				F58D30122C89C10A0003A82E /* Smoothing Algorithms */,
 				F54543202C85C87E0085795A /* Extensions */,
 				F545431D2C85C58E0085795A /* Models */,
 				E0DCA6222661B39200496154 /* Controller */,
@@ -205,6 +214,17 @@
 				F54543212C85C88E0085795A /* HKWorkoutActivityType+.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F58D30122C89C10A0003A82E /* Smoothing Algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				F58D30172C89C1AE0003A82E /* ExponentialMovingAverage.swift */,
+				F58D30152C89C1750003A82E /* SimpleMovingAverage.swift */,
+				F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */,
+				F58D30192C89C1D80003A82E /* SmoothingAlgorithmType.swift */,
+			);
+			path = "Smoothing Algorithms";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,11 +329,15 @@
 				E0DCA6302661B3CD00496154 /* ElapsedTimeView.swift in Sources */,
 				E0DCA62C2661B3CD00496154 /* ControlsView.swift in Sources */,
 				E0CF93B52661A76500F7CED2 /* MyWorkoutsApp.swift in Sources */,
+				F58D30162C89C1750003A82E /* SimpleMovingAverage.swift in Sources */,
 				E0CF93B72661A76500F7CED2 /* ComplicationController.swift in Sources */,
+				F58D30142C89C1400003A82E /* SmoothingAlgorithm.swift in Sources */,
 				E0DCA62D2661B3CD00496154 /* ActivityRingsView.swift in Sources */,
 				E0DCA6242661B3A800496154 /* WorkoutManager.swift in Sources */,
+				F58D301A2C89C1D80003A82E /* SmoothingAlgorithmType.swift in Sources */,
 				E0DCA6322661B3CD00496154 /* MetricsView.swift in Sources */,
 				F54543222C85C88E0085795A /* HKWorkoutActivityType+.swift in Sources */,
+				F58D30182C89C1AE0003A82E /* ExponentialMovingAverage.swift in Sources */,
 				F545431F2C85C5990085795A /* Metric.swift in Sources */,
 				E0DCA62E2661B3CD00496154 /* SummaryView.swift in Sources */,
 				E0DCA62F2661B3CD00496154 /* StartView.swift in Sources */,

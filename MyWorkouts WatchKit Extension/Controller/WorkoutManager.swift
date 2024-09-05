@@ -29,6 +29,12 @@ final class WorkoutManager: NSObject, ObservableObject {
     var session: HKWorkoutSession?
     var builder: HKLiveWorkoutBuilder?
 
+    private var smoothingAlgorithm: SmoothingAlgorithm
+
+    init(algorithmType: SmoothingAlgorithmType = .simpleMovingAverage(bufferSize: 2)) {
+        self.smoothingAlgorithm = algorithmType.makeAlgorithm()
+    }
+
     // Start the workout.
     func startWorkout(workoutType: HKWorkoutActivityType) {
         let configuration = HKWorkoutConfiguration()
@@ -190,7 +196,10 @@ final class WorkoutManager: NSObject, ObservableObject {
                 self.distance.set(newValue: statistics.sumQuantity()?.doubleValue(for: meterUnit) ?? 0)
             case HKQuantityType.quantityType(forIdentifier: .walkingSpeed):
                 let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
-                self.updatePace(with: statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                let smoothedPace = self.smoothingAlgorithm.smoothPace(
+                    statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0
+                )
+                self.currentPace.set(newValue: smoothedPace)
                 self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
             case HKQuantityType.quantityType(forIdentifier: .walkingStepLength):
                 let paceUnit = HKUnit.meter()
@@ -214,7 +223,10 @@ final class WorkoutManager: NSObject, ObservableObject {
                         "[Speed] Most recent quantity: \(statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)"
                     )
 
-                    self.updatePace(with: statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                    let smoothedPace = self.smoothingAlgorithm.smoothPace(
+                        statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0
+                    )
+                    self.currentPace.set(newValue: smoothedPace)
                     self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
                 case HKQuantityType.quantityType(forIdentifier: .runningStrideLength):
                     let paceUnit = HKUnit.meter()
@@ -234,7 +246,10 @@ final class WorkoutManager: NSObject, ObservableObject {
                 switch statistics.quantityType {
                 case HKQuantityType.quantityType(forIdentifier: .cyclingSpeed):
                     let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
-                    self.updatePace(with: statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                    let smoothedPace = self.smoothingAlgorithm.smoothPace(
+                        statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0
+                    )
+                    self.currentPace.set(newValue: smoothedPace)
                     self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
                 case HKQuantityType.quantityType(forIdentifier: .cyclingCadence):
                     let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
@@ -259,66 +274,6 @@ final class WorkoutManager: NSObject, ObservableObject {
         currentPace.set(newValue: 0)
         averagePace.set(newValue: 0)
         cyclingCadence.set(newValue: 0)
-    }
-
-    // MARK: - Metrics Calculation
-
-    private enum SmoothingAlgorithmType: String {
-        case simple = "Simple Moving Average (SMA)"
-        case exponential = "Exponential Moving Average (EMA)"
-    }
-
-    private let smoothingType: SmoothingAlgorithmType = .exponential
-
-    private func updatePace(with newPace: Double) {
-        switch smoothingType {
-        case .simple:
-            updatePaceWithSimpleMovingAverage(newPace: newPace)
-        case .exponential:
-            updatePaceWithExponentialMovingAverage(newPace: newPace)
-        }
-    }
-
-    // MARK: - Simple Moving Average (SMA)
-
-    private var paceBuffer: [Double] = []
-    private static let bufferSize = 5
-
-    // Function to update the current pace with smoothing
-    private func updatePaceWithSimpleMovingAverage(newPace: Double) {
-        paceBuffer.append(newPace)
-
-        if paceBuffer.count > Self.bufferSize {
-            paceBuffer.removeFirst()
-        }
-
-        let smoothedPace = smoothPace(paceBuffer)
-        debugPrint("[Speed] Smoothed Pace (Simple Moving Average): \(smoothedPace)")
-        currentPace.set(newValue: smoothedPace)
-    }
-
-    // Smoothing function using Simple Moving Average
-    private func smoothPace(_ paceBuffer: [Double]) -> Double {
-        guard !paceBuffer.isEmpty else { return 0.0 }
-
-        let sum = paceBuffer.reduce(0, +)
-        return sum / Double(paceBuffer.count)
-    }
-    
-    // MARK: - Exponential Moving Average (EMA)
-
-    private var prevEMA: Double = 0
-    private let alpha: Double = 0.2 // Adjust this value to control smoothing
-
-    private func updatePaceWithExponentialMovingAverage(newPace: Double) {
-        if prevEMA == 0 {
-            prevEMA = newPace
-        } else {
-            prevEMA = alpha * newPace + (1 - alpha) * prevEMA
-        }
-        
-        debugPrint("[Speed] Smoothed Pace (EMA): \(prevEMA)")
-        currentPace.set(newValue: prevEMA)
     }
 }
 
