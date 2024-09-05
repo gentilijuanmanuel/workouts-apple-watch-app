@@ -29,6 +29,12 @@ final class WorkoutManager: NSObject, ObservableObject {
     var session: HKWorkoutSession?
     var builder: HKLiveWorkoutBuilder?
 
+    private var smoothingAlgorithm: SmoothingAlgorithm
+
+    init(smoothingAlgorithm: SmoothingAlgorithm = SimpleMovingAverage(bufferSize: 2)) {
+        self.smoothingAlgorithm = smoothingAlgorithm
+    }
+
     // Start the workout.
     func startWorkout(workoutType: HKWorkoutActivityType) {
         let configuration = HKWorkoutConfiguration()
@@ -173,7 +179,7 @@ final class WorkoutManager: NSObject, ObservableObject {
     func updateForStatistics(_ statistics: HKStatistics?) {
         guard let statistics = statistics else { return }
 
-        print("Logging: -> \(statistics.quantityType)")
+        debugPrint("Logging: -> \(statistics.quantityType)")
 
         DispatchQueue.main.async {
             switch statistics.quantityType {
@@ -190,7 +196,10 @@ final class WorkoutManager: NSObject, ObservableObject {
                 self.distance.set(newValue: statistics.sumQuantity()?.doubleValue(for: meterUnit) ?? 0)
             case HKQuantityType.quantityType(forIdentifier: .walkingSpeed):
                 let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
-                self.currentPace.set(newValue: statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                let smoothedPace = self.smoothingAlgorithm.smoothPace(
+                    statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0
+                )
+                self.currentPace.set(newValue: smoothedPace)
                 self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
             case HKQuantityType.quantityType(forIdentifier: .walkingStepLength):
                 let paceUnit = HKUnit.meter()
@@ -209,7 +218,10 @@ final class WorkoutManager: NSObject, ObservableObject {
                 switch statistics.quantityType {
                 case HKQuantityType.quantityType(forIdentifier: .runningSpeed):
                     let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
-                    self.currentPace.set(newValue: statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                    let smoothedPace = self.smoothingAlgorithm.smoothPace(
+                        statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0
+                    )
+                    self.currentPace.set(newValue: smoothedPace)
                     self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
                 case HKQuantityType.quantityType(forIdentifier: .runningStrideLength):
                     let paceUnit = HKUnit.meter()
@@ -229,7 +241,10 @@ final class WorkoutManager: NSObject, ObservableObject {
                 switch statistics.quantityType {
                 case HKQuantityType.quantityType(forIdentifier: .cyclingSpeed):
                     let paceUnit = HKUnit.meter().unitDivided(by: HKUnit.second())
-                    self.currentPace.set(newValue: statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0)
+                    let smoothedPace = self.smoothingAlgorithm.smoothPace(
+                        statistics.mostRecentQuantity()?.doubleValue(for: paceUnit) ?? 0
+                    )
+                    self.currentPace.set(newValue: smoothedPace)
                     self.averagePace.set(newValue: statistics.averageQuantity()?.doubleValue(for: paceUnit) ?? 0)
                 case HKQuantityType.quantityType(forIdentifier: .cyclingCadence):
                     let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
