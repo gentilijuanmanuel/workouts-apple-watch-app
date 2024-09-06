@@ -127,49 +127,49 @@ final class WorkoutManager: NSObject, ObservableObject {
     // MARK: - Workout Metrics
 
     @Published var averageHeartRate = Metric(
-        kind: .hearthRate(.bpm),
+        kind: .hearthRate(.bpm, Metric.numberFormatter),
         value: 0,
         description: "Avg. Heart Rate"
     )
 
     @Published var heartRate = Metric(
-        kind: .hearthRate(.bpm),
+        kind: .hearthRate(.bpm, Metric.numberFormatter),
         value: 0,
         description: "Current Heart Rate"
     )
 
     @Published var activeEnergy = Metric(
-        kind: .activeEnergy(.kilocalories),
+        kind: .activeEnergy(.kilocalories, Metric.activeEnergyFormatter),
         value: 0,
         description: "Current Active Energy"
     )
 
     @Published var distance = Metric(
-        kind: .distance(.meters),
+        kind: .distance(.meters, Metric.distanceFormatter),
         value: 0,
         description: "Current Distance"
     )
 
     @Published var currentPace = Metric(
-        kind: .currentPace(.metersPerSecond),
+        kind: .currentPace(.metersPerSecond, Metric.speedFormatter),
         value: 0,
         description: "Current Pace"
     )
 
     @Published var averagePace = Metric(
-        kind: .averagePace(.metersPerSecond),
+        kind: .averagePace(.metersPerSecond, Metric.speedFormatter),
         value: 0,
         description: "Avg. Pace"
     )
 
     @Published var cyclingCadence = Metric(
-        kind: .cadence(.rpm),
+        kind: .cadence(.rpm, Metric.numberFormatter),
         value: 0,
         description: "Current Cadence"
     )
 
     @Published var walkingRunningCadence = Metric(
-        kind: .cadence(.spm),
+        kind: .cadence(.spm, Metric.numberFormatter),
         value: 0,
         description: "Current Cadence"
     )
