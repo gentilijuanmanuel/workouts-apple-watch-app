@@ -5,6 +5,7 @@ Abstract:
 The workout manager that interfaces with HealthKit.
 */
 
+import Combine
 import HealthKit
 
 // MARK: - WorkoutManager
@@ -29,10 +30,23 @@ final class WorkoutManager: NSObject, ObservableObject {
     var session: HKWorkoutSession?
     var builder: HKLiveWorkoutBuilder?
 
+    private let statisticsSubject = PassthroughSubject<HKStatistics, Never>()
+    private var cancellables = Set<AnyCancellable>()
     private var smoothingAlgorithm: SmoothingAlgorithm
 
     init(smoothingAlgorithm: SmoothingAlgorithm = SimpleMovingAverage(bufferSize: 2)) {
         self.smoothingAlgorithm = smoothingAlgorithm
+        super.init()
+        setupSubscriptions()
+    }
+
+    private func setupSubscriptions() {
+        statisticsSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] statistics in
+                self?.updateForStatistics(statistics)
+            }
+            .store(in: &cancellables)
     }
 
     // Start the workout.
@@ -176,9 +190,7 @@ final class WorkoutManager: NSObject, ObservableObject {
 
     @Published var workout: HKWorkout?
 
-    func updateForStatistics(_ statistics: HKStatistics?) {
-        guard let statistics = statistics else { return }
-
+    func updateForStatistics(_ statistics: HKStatistics) {
         debugPrint("Logging: -> \(statistics.quantityType)")
 
         DispatchQueue.main.async {
@@ -264,7 +276,7 @@ final class WorkoutManager: NSObject, ObservableObject {
     }
 
     private func calculateCadence(given stepLength: Double) -> Double {
-        let minute = Measurement(value: 1,unit: UnitDuration.minutes)
+        let minute = Measurement(value: 1, unit: UnitDuration.minutes)
             .converted(to: .seconds)
             .value
         return (self.currentPace.value / stepLength) * minute
@@ -306,14 +318,14 @@ extension WorkoutManager: HKLiveWorkoutBuilderDelegate {
 
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
         for type in collectedTypes {
-            guard let quantityType = type as? HKQuantityType else {
+            guard
+                let quantityType = type as? HKQuantityType,
+                let statistics = workoutBuilder.statistics(for: quantityType)
+            else {
                 return // Nothing to do.
             }
 
-            let statistics = workoutBuilder.statistics(for: quantityType)
-
-            // Update the published values.
-            updateForStatistics(statistics)
+            statisticsSubject.send(statistics)
         }
     }
 }
