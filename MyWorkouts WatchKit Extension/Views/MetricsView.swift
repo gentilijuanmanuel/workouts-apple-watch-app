@@ -63,7 +63,10 @@ struct MetricsView_Previews: PreviewProvider {
     static var previews: some View {
         MetricsView(
             metrics: [
-                Metric(kind: .activeEnergy(.kilocalories), value: 0)
+                Metric(
+                    kind: .activeEnergy(.kilocalories, Metric.activeEnergyFormatter),
+                    value: 0
+                )
             ]
         )
         .environmentObject(workoutManager)
