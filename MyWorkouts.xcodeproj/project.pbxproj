@@ -25,6 +25,8 @@
 		F545431F2C85C5990085795A /* Metric.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545431E2C85C5990085795A /* Metric.swift */; };
 		F54543222C85C88E0085795A /* HKWorkoutActivityType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54543212C85C88E0085795A /* HKWorkoutActivityType+.swift */; };
 		F57FA8182C89D11B00E0D2BD /* MetricTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57FA8172C89D11B00E0D2BD /* MetricTests.swift */; };
+		F57FA81A2C8B0E8D00E0D2BD /* SimpleMovingAverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57FA8192C8B0E8D00E0D2BD /* SimpleMovingAverageTests.swift */; };
+		F57FA81C2C8B0ED500E0D2BD /* ExponentialMovingAverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57FA81B2C8B0ED500E0D2BD /* ExponentialMovingAverageTests.swift */; };
 		F58D30142C89C1400003A82E /* SmoothingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */; };
 		F58D30162C89C1750003A82E /* SimpleMovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30152C89C1750003A82E /* SimpleMovingAverage.swift */; };
 		F58D30182C89C1AE0003A82E /* ExponentialMovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30172C89C1AE0003A82E /* ExponentialMovingAverage.swift */; };
@@ -88,6 +90,8 @@
 		F54543212C85C88E0085795A /* HKWorkoutActivityType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HKWorkoutActivityType+.swift"; sourceTree = "<group>"; };
 		F57FA80E2C89D0CD00E0D2BD /* MyWorkouts WatchKit Extension AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MyWorkouts WatchKit Extension AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F57FA8172C89D11B00E0D2BD /* MetricTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricTests.swift; sourceTree = "<group>"; };
+		F57FA8192C8B0E8D00E0D2BD /* SimpleMovingAverageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleMovingAverageTests.swift; sourceTree = "<group>"; };
+		F57FA81B2C8B0ED500E0D2BD /* ExponentialMovingAverageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExponentialMovingAverageTests.swift; sourceTree = "<group>"; };
 		F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmoothingAlgorithm.swift; sourceTree = "<group>"; };
 		F58D30152C89C1750003A82E /* SimpleMovingAverage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleMovingAverage.swift; sourceTree = "<group>"; };
 		F58D30172C89C1AE0003A82E /* ExponentialMovingAverage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExponentialMovingAverage.swift; sourceTree = "<group>"; };
@@ -237,6 +241,8 @@
 			isa = PBXGroup;
 			children = (
 				F57FA8172C89D11B00E0D2BD /* MetricTests.swift */,
+				F57FA8192C8B0E8D00E0D2BD /* SimpleMovingAverageTests.swift */,
+				F57FA81B2C8B0ED500E0D2BD /* ExponentialMovingAverageTests.swift */,
 			);
 			path = "MyWorkouts WatchKit Extension AppTests";
 			sourceTree = "<group>";
@@ -405,6 +411,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F57FA8182C89D11B00E0D2BD /* MetricTests.swift in Sources */,
+				F57FA81A2C8B0E8D00E0D2BD /* SimpleMovingAverageTests.swift in Sources */,
+				F57FA81C2C8B0ED500E0D2BD /* ExponentialMovingAverageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
