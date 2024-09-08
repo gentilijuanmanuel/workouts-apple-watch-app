@@ -18,3 +18,20 @@ Before you run the sample code project in Xcode:
 5. Open the `Info.plist` file of the WatchKit Extension target, and change the value of the `NSExtension` > `NSExtensionAttributes` > `WKAppBundleIdentifier` key to the bundle ID you noted in the previous step.
 6. Make a clean build and run the sample app on your device.
 
+# Roadmap
+
+- [ ] Implement a more robust architecture to decouple dependencies. Consider options such as:
+  - MVVM with injectable View Models and Services/Managers
+  - TCA (The Composable Architecture) with injectable Features and Services
+  This approach will facilitate mocking dependencies (e.g., `HealthKit`), enabling more effective unit testing and `SwiftUI` previews.
+
+- [ ] Enhance accessibility features, including:
+  - Localization for multiple languages
+  - Support for dynamic font sizes
+  - Improved VoiceOver functionality
+  - Other relevant accessibility considerations
+
+- [ ] Develop a companion iOS app to:
+  - Display historical workout metrics
+  - Showcase progress trends
+  - Implement visual data representation (consider using `SwiftUI Charts` for an elegant, native solution)
