@@ -2,7 +2,7 @@
 See LICENSE folder for this sample’s licensing information.
 
 Abstract:
-Description about what the file includes goes here.
+Metric model tests.
 */
 
 import Foundation

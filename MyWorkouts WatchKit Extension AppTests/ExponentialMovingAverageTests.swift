@@ -2,7 +2,7 @@
 See LICENSE folder for this sample’s licensing information.
 
 Abstract:
-The workout manager that interfaces with HealthKit.
+Exponential Moving Average algorithm tests.
 */
 
 import XCTest

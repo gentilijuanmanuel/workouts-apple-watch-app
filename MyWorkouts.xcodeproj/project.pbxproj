@@ -30,6 +30,8 @@
 		F58D30142C89C1400003A82E /* SmoothingAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */; };
 		F58D30162C89C1750003A82E /* SimpleMovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30152C89C1750003A82E /* SimpleMovingAverage.swift */; };
 		F58D30182C89C1AE0003A82E /* ExponentialMovingAverage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F58D30172C89C1AE0003A82E /* ExponentialMovingAverage.swift */; };
+		F5BF125A2C8DDEC300912594 /* AnimatedHeartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF12592C8DDEC300912594 /* AnimatedHeartView.swift */; };
+		F5BF125C2C8DDF1B00912594 /* MetricsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BF125B2C8DDF1B00912594 /* MetricsRowView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +97,8 @@
 		F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmoothingAlgorithm.swift; sourceTree = "<group>"; };
 		F58D30152C89C1750003A82E /* SimpleMovingAverage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleMovingAverage.swift; sourceTree = "<group>"; };
 		F58D30172C89C1AE0003A82E /* ExponentialMovingAverage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExponentialMovingAverage.swift; sourceTree = "<group>"; };
+		F5BF12592C8DDEC300912594 /* AnimatedHeartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedHeartView.swift; sourceTree = "<group>"; };
+		F5BF125B2C8DDF1B00912594 /* MetricsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsRowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +198,8 @@
 		E0DCA6212661B38900496154 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F5BF12582C8DDEB500912594 /* Rows */,
+				F5BF12572C8DDEAD00912594 /* Components */,
 				E0DCA6262661B3CD00496154 /* ActivityRingsView.swift */,
 				E0DCA6252661B3CD00496154 /* ControlsView.swift */,
 				E0DCA6292661B3CD00496154 /* ElapsedTimeView.swift */,
@@ -255,6 +261,22 @@
 				F58D30132C89C1400003A82E /* SmoothingAlgorithm.swift */,
 			);
 			path = "Smoothing Algorithms";
+			sourceTree = "<group>";
+		};
+		F5BF12572C8DDEAD00912594 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F5BF12592C8DDEC300912594 /* AnimatedHeartView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		F5BF12582C8DDEB500912594 /* Rows */ = {
+			isa = PBXGroup;
+			children = (
+				F5BF125B2C8DDF1B00912594 /* MetricsRowView.swift */,
+			);
+			path = Rows;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -392,8 +414,10 @@
 				E0DCA62C2661B3CD00496154 /* ControlsView.swift in Sources */,
 				E0CF93B52661A76500F7CED2 /* MyWorkoutsApp.swift in Sources */,
 				F58D30162C89C1750003A82E /* SimpleMovingAverage.swift in Sources */,
+				F5BF125A2C8DDEC300912594 /* AnimatedHeartView.swift in Sources */,
 				E0CF93B72661A76500F7CED2 /* ComplicationController.swift in Sources */,
 				F58D30142C89C1400003A82E /* SmoothingAlgorithm.swift in Sources */,
+				F5BF125C2C8DDF1B00912594 /* MetricsRowView.swift in Sources */,
 				E0DCA62D2661B3CD00496154 /* ActivityRingsView.swift in Sources */,
 				E0DCA6242661B3A800496154 /* WorkoutManager.swift in Sources */,
 				E0DCA6322661B3CD00496154 /* MetricsView.swift in Sources */,

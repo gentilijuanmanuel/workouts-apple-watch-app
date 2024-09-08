@@ -65,7 +65,13 @@ struct MetricsView_Previews: PreviewProvider {
             metrics: [
                 Metric(
                     kind: .activeEnergy(.kilocalories, Metric.activeEnergyFormatter),
-                    value: 0
+                    value: 0,
+                    description: "Active energy"
+                ),
+                Metric(
+                    kind: .hearthRate(.bpm, Metric.numberFormatter),
+                    value: 120,
+                    description: "Heart rate"
                 )
             ]
         )
@@ -93,30 +99,5 @@ private struct MetricsTimelineSchedule: TimelineSchedule {
             guard !isPaused else { return nil }
             return baseSchedule.next()
         }
-    }
-}
-
-// MARK: - MetricRowView
-
-struct MetricRowView: View {
-    private enum Layout {
-        static let stackSpacing: CGFloat = -8
-    }
-
-    private let metric: Metric
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: Layout.stackSpacing) {
-            if let description = metric.description {
-                Text(description)
-                    .font(.caption)
-                    .foregroundStyle(.gray)
-            }
-            Text(metric.formattedValue)
-        }
-    }
-
-    init(metric: Metric) {
-        self.metric = metric
     }
 }
